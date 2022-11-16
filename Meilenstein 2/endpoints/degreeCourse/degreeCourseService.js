@@ -1,0 +1,104 @@
+const DegreeCourseModel = require('./degreeCourseModel');
+
+/**
+ * 1. Alle Kurse
+ * 2. Einen bestimmten Kurs nach ID und allen anderen Attributen
+ * 3. Kurs anlegen
+ * 4. Kurs ändern (Namen)
+ * 5. Kurs löschen
+ */
+
+
+const getDegreeCourses = (searchVariable, callback) => {
+    const users = DegreeCourseModel.find(searchVariable, (error, degree) => {
+        if (error) {
+            return callback(error, null);
+        } else {
+            return callback(null, degree);
+        }
+    });
+}
+
+
+function findDegreeCourseBy(searchProperty, callback) {
+    const query = DegreeCourseModel.findOne({ _id: searchProperty });
+    query.exec(function (error, course) {
+        if (error) {
+            return callback("Did not find course", null);
+        }
+        else {
+            return callback(null, course);
+        }
+    });
+}
+
+const createDegreeCourse = (course, callback) => {
+    console.log(course);
+    if (!course.name || !course.universityName || !course.departmentName) {
+        return callback('Please insert the required fields!', null)
+    }
+    if (course.name === '' || course.universityName === '' || course.departmentName === '') {
+        return callback('Please fill all required fields!', null);
+    }
+    // TODO
+    const query = DegreeCourseModel.findOne({ name: course.name });
+    // params error and result have to be in that order
+    query.exec(async (error, result) => {
+        if (error) {
+            return callback('Could not create user!', null)
+        } else {
+            if (result) {
+                return callback('User already exists!', null);
+            } else {
+                const created = await DegreeCourseModel.create(course);
+                return callback(null, created);
+            }
+        }
+    });
+};
+
+const updateDegreeCourse = (update, parameters, callback) => {
+    if (update.name === '' || update.universityName === '' || update.departmentName === '') {
+        return callback('Please fill all required fields!', null);
+    }
+    // TODO
+    const query = DegreeCourseModel.findOne({ _id: parameters.degreeCourseID });
+
+    query.exec(async (error, result) => {
+        if (error) {
+            return callback('Could not update degree course', null);
+        } else {
+            if (result) {
+                const updated = await DegreeCourseModel.findOneAndUpdate({ _id: parameters.degreeCourseID }, update, { new: true });
+                return callback(null, updated);
+            } else {
+                return callback('Degree course not found!', null);
+            }
+        }
+    });
+};
+
+const deleteDegreeCourse = (parameters, callback) => {
+    const query = DegreeCourseModel.findOne({ _id: parameters.degreeCourseID });
+    query.exec(async(error, result) => {
+        if (error) {
+            return callback('Could not delete degree course', null);
+        } else {
+            if (result) {
+                const deleted = await DegreeCourseModel.deleteOne({ _id: parameters.degreeCourseID });
+                return callback(null, deleted);
+            } else {
+                return callback('User not found!', null)
+            }
+        }
+    });
+};
+
+
+module.exports = {
+    getDegreeCourses,
+    findDegreeCourseBy,
+    createDegreeCourse,
+    updateDegreeCourse,
+    deleteDegreeCourse
+}
