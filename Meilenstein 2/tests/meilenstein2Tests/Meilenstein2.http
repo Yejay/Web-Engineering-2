@@ -70,7 +70,7 @@ Authorization: {{adminToken}}
 Content-Type: application/json
 
 {
-    "universityName": "Beuth Hochschule für Technik Berlin",
+    "universityName": "euth Hochschule für Technik Berlin",
     "universityShortName": "Beuth HS",
     "departmentName": "Informatik und Medien",
     "departmentShortName": "FB VI",

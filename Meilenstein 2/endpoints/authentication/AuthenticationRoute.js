@@ -12,9 +12,11 @@ router.get('/', (req, res) => {
             res.header("Authorization", "Bearer " + token);
             if (user) {
                 res.status(200).send(user);
+            } else {
+                res.status(401).json({err: 'Not Authorized'});
             }
         } else {
-            res.status(401).json({ message: "Not Authorized" })
+            res.status(401).json({ err: "Not Authorized" });
         }
     })
 });

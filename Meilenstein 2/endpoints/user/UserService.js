@@ -89,14 +89,14 @@ const updateFirstAndLastName = async (update, userId, callback) => {
     });
 };
 
-const deleteUser = async (userId, callback) => {
+const deleteUser = (userId, callback) => {
     const duplicate = UserModel.findOne({ userID: userId });
     duplicate.exec(async (error, result) => {
         if (result) {
             const deleted = await UserModel.deleteOne({ userID: userId });
-            return callback(deleted, null);
+            return callback(null, deleted);
         } else {
-            return callback(null, 'User not found!')
+            return callback('User not found!', null)
         }
 
     });

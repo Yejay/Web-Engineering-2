@@ -41,18 +41,14 @@ const createDegreeCourse = (course, callback) => {
         return callback('Please fill all required fields!', null);
     }
     // TODO
-    const query = DegreeCourseModel.findOne({ name: course.name });
+    const query = DegreeCourseModel.findOne(course);
     // params error and result have to be in that order
     query.exec(async (error, result) => {
-        if (error) {
-            return callback('Could not create user!', null)
+        if (result) {
+            return callback('Degree course already exists!', null);
         } else {
-            if (result) {
-                return callback('User already exists!', null);
-            } else {
-                const created = await DegreeCourseModel.create(course);
-                return callback(null, created);
-            }
+            const created = await DegreeCourseModel.create(course);
+            return callback(null, created);
         }
     });
 };
@@ -80,7 +76,7 @@ const updateDegreeCourse = (update, parameters, callback) => {
 
 const deleteDegreeCourse = (parameters, callback) => {
     const query = DegreeCourseModel.findOne({ _id: parameters.degreeCourseID });
-    query.exec(async(error, result) => {
+    query.exec(async (error, result) => {
         if (error) {
             return callback('Could not delete degree course', null);
         } else {
@@ -88,7 +84,7 @@ const deleteDegreeCourse = (parameters, callback) => {
                 const deleted = await DegreeCourseModel.deleteOne({ _id: parameters.degreeCourseID });
                 return callback(null, deleted);
             } else {
-                return callback('User not found!', null)
+                return callback('Degree course not found!', null)
             }
         }
     });
