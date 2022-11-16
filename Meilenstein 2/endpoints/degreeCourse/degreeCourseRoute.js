@@ -108,7 +108,7 @@ router.delete('/:degreeCourseID', (req, res) => {
             if (result) {
                 if (result.isAdministrator || result.user == req.params.degreeCourseID) {
                     const parameters = req.params;
-                    degreeCourseService.deleteDegreeCourse(parameters, (result, error) => {
+                    degreeCourseService.deleteDegreeCourse(parameters, (error, result) => {
                         if (result) {
                             res.status(204).json(result);
                         } else {
