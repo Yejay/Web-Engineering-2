@@ -5,11 +5,11 @@ const authenticationService = require("./AuthenticationService")
 
 
 router.get('/', (req, res) => {
-    authenticationService.createSessionToken(req.headers.authorization, (err, token) => {
+    authenticationService.createSessionToken(req.headers.authorization, (error, token) => {
         if (token) {
-            res.status(200).header("Authorization", "Bearer " + token).send('Authorization successfull');
+            res.status(200).header("Authorization", "Bearer " + token).json({message: 'Authorization successful'});
         } else {
-            res.status(401).json({ err: "Not Authorized" });
+            res.status(401).json({ error: "Not Authorized" });
         }
     })
 });

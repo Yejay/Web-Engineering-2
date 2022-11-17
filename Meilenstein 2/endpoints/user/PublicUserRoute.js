@@ -26,7 +26,7 @@ router.post('/', (req, res) => {
             res.status(200).json(result);
         } else {
             if (error) {
-                res.status(400).json(error);
+                res.status(400).json({ error: error });
             }
         }
     });
@@ -40,7 +40,7 @@ router.put('/:userID', async (req, res) => {
             res.status(200).json(result);
         } else {
             if (error) {
-                res.status(404).json(error);
+                res.status(404).json({ error: error });
             }
         }
     });
@@ -49,12 +49,12 @@ router.put('/:userID', async (req, res) => {
 
 router.delete('/:userID', async (req, res) => {
     const userId = req.params['userID'];
-    await userService.deleteUser(userId, (result, error) => {
+    await userService.deleteUser(userId, (error, result) => {
         if (result) {
-            res.status(204).json(`User with ID: (${userId}) was successfully deleted.`);
+            res.status(204).json();
             console.log(`User with ID: (${userId}) was successfully deleted.`);
         } else {
-            res.status(404).json(error);
+            res.status(404).json({ error: error });
         }
     });
 });

@@ -59,7 +59,7 @@ router.post('/', (req, res) => {
                         if (result) {
                             res.status(200).json(result);
                         } else {
-                            res.status(400).json(error);
+                            res.status(400).json({ error: error });
                         }
                     });
                 } else {
@@ -86,7 +86,7 @@ router.put('/:userID', async (req, res) => {
                             res.status(200).json(result);
                         } else {
                             if (error) {
-                                res.status(404).json(error);
+                                res.status(404).json({ error: error });
                             }
                         }
                     });
@@ -115,7 +115,7 @@ router.delete('/:userID', async (req, res) => {
                             res.status(204).json();
                             console.log(`User with ID: (${userId}) was successfully deleted.`);
                         } else {
-                            res.status(404).json(error);
+                            res.status(404).json({ error: error });
                         }
                     });
                 } else {
