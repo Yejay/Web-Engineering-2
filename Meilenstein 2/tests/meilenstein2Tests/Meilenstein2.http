@@ -32,7 +32,7 @@ Content-Type: application/json
 }
 
 ### Abrufen des angelegten Users mit dem Admin-Token
-GET http://localhost/api/users/manfred
+GET http://localhost/api/users/admin
 Authorization: {{adminToken}}
 
 // Ändere beim zweiten User den User-Name. Zur Selektion des Users verwende die userID.
@@ -70,7 +70,7 @@ Authorization: {{adminToken}}
 Content-Type: application/json
 
 {
-    "universityName": "euth Hochschule für Technik Berlin",
+    "universityName": "Beuth Hochschule für Technik Berlin",
     "universityShortName": "Beuth HS",
     "departmentName": "Informatik und Medien",
     "departmentShortName": "FB VI",

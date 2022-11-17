@@ -4,7 +4,7 @@ const router = express.Router();
 const degreeCourseService = require('./degreeCourseService');
 const authenticationService = require('../authentication/AuthenticationService');
 
-// GET
+
 router.get('/', (req, res) => {
     degreeCourseService.getDegreeCourses(req.query, (error, result) => {
         if (result) {
@@ -27,7 +27,7 @@ router.get('/:_id', (req, res) => {
     });
 });
 
-// POST
+
 router.post('/', (req, res) => {
     if (!req.headers.authorization) {
         res.status(401).json({ error: 'Not authorized, invalid token' })
@@ -51,7 +51,7 @@ router.post('/', (req, res) => {
     };
 });
 
-// PUT
+
 router.put('/:degreeCourseID', (req, res) => {
     if (!req.headers.authorization) {
         res.status(401).json({ error: 'Not authorized, invalid token' })
@@ -76,7 +76,7 @@ router.put('/:degreeCourseID', (req, res) => {
     }
 });
 
-// DELETE
+
 router.delete('/:degreeCourseID', (req, res) => {
     if (!req.headers.authorization) {
         res.status(401).json({ error: 'Not authorized, invalid token' })

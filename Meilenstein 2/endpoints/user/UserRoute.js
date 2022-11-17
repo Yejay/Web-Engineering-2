@@ -10,8 +10,8 @@ router.get('/', (req, res) => {
         authenticationService.verifyJWT(req.headers.authorization, async (error, result) => {
             if (result) {
                 if (result.isAdministrator) {
-                    const users = await userService.getUsers();
-                    res.status(200).send(users);
+                    const users = await userService.getUsers(false);
+                    res.status(200).json(users);
                 } else {
                     res.status(401).json({ error: 'Not authorized' });
                 }
@@ -30,40 +30,11 @@ router.get('/:userID', (req, res) => {
             if (result) {
                 if (result.isAdministrator || result.user == req.params.userID) {
                     const userId = req.params['userID'];
-                    userService.findUserBy(userId, (error, result) => {
+                    userService.findUserBy(userId, false, (error, result) => {
                         if (result) {
                             res.status(200).json(result);
                         } else {
                             res.status(400).json({ error: 'User with specified user ID not found!' });
-                        }
-                    });
-                } else {
-                    res.status(401).json({ error: 'Not Authorized!' });
-                }
-            } else {
-                res.status(401).json({ error: 'Invalid token' });
-            }
-        })
-    }
-});
-
-
-router.put('/:userID', async (req, res) => {
-    if (!req.headers.authorization) {
-        res.status(401).json({ error: 'Not authorized, invalid token' })
-    } else {
-        authenticationService.verifyJWT(req.headers.authorization, (error, result) => {
-            if (result) {
-                if (result.isAdministrator || result.user == req.params.userID) {
-                    const userId = req.params['userID'];
-                    const toBeUpdated = req.body;
-                    userService.updateFirstAndLastName(toBeUpdated, userId, (result, error) => {
-                        if (result) {
-                            res.status(200).json(result);
-                        } else {
-                            if (error) {
-                                res.status(404).json(error);
-                            }
                         }
                     });
                 } else {
@@ -84,7 +55,7 @@ router.post('/', (req, res) => {
             if (result) {
                 if (result.isAdministrator) {
                     const user = req.body;
-                    userService.registerUser(user, (error, result) => {
+                    userService.registerUser(user, false, (error, result) => {
                         if (result) {
                             res.status(200).json(result);
                         } else {
@@ -101,13 +72,43 @@ router.post('/', (req, res) => {
     };
 });
 
+router.put('/:userID', async (req, res) => {
+    if (!req.headers.authorization) {
+        res.status(401).json({ error: 'Not authorized, invalid token' })
+    } else {
+        authenticationService.verifyJWT(req.headers.authorization, (error, result) => {
+            if (result) {
+                if (result.isAdministrator || result.user == req.params.userID) {
+                    const userId = req.params['userID'];
+                    const toBeUpdated = req.body;
+                    userService.updateFirstAndLastName(toBeUpdated, userId, false, (error, result) => {
+                        if (result) {
+                            res.status(200).json(result);
+                        } else {
+                            if (error) {
+                                res.status(404).json(error);
+                            }
+                        }
+                    });
+                } else {
+                    res.status(401).json({ error: 'Not Authorized!' });
+                }
+            } else {
+                res.status(401).json({ error: 'Invalid token' });
+            }
+        })
+    }
+});
+
+
+
 router.delete('/:userID', async (req, res) => {
     if (!req.headers.authorization) {
         res.status(401).json({ error: 'Not authorized, invalid token' })
     } else {
         authenticationService.verifyJWT(req.headers.authorization, async (error, result) => {
             if (result) {
-                if (result.isAdministrator || result.user == req.params.userID) {
+                if (result.isAdministrator) {
                     const userId = req.params['userID'];
                     await userService.deleteUser(userId, (error, result) => {
                         if (result) {

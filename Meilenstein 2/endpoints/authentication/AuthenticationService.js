@@ -13,7 +13,7 @@ function createSessionToken(props, callback) {
     const credentials = Buffer.from(base64Credentials, 'base64').toString('ascii');
     const [username, password] = credentials.split(':');
 
-    userService.findUserBy(username, function (error, user) {
+    userService.findUserBy(username, true, function (error, user) {
         console.log('in find user');
         if (user) {
             console.log("Found user, check the password")
@@ -32,7 +32,7 @@ function createSessionToken(props, callback) {
                         var privateKey = config.get("session.tokenKey");
                         var token = jwt.sign({ "user": user.userID, "isAdministrator": user.isAdministrator }, privateKey, { expiresIn: expirationTime * 1000, algorithm: "HS256" });
                         console.log("Token created: " + token);
-                        callback(null, token, user);
+                        callback(null, token);
                     }
                     else {
                         console.log("Password or user ID are invalid");
@@ -47,6 +47,7 @@ function createSessionToken(props, callback) {
         }
     })
 }
+
 
 function verifyJWT(req, callback) {
     const token = req.split(' ')[1];

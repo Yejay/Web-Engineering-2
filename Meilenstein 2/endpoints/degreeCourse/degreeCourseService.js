@@ -1,14 +1,5 @@
 const DegreeCourseModel = require('./degreeCourseModel');
 
-/**
- * 1. Alle Kurse
- * 2. Einen bestimmten Kurs nach ID und allen anderen Attributen
- * 3. Kurs anlegen
- * 4. Kurs ändern (Namen)
- * 5. Kurs löschen
- */
-
-
 const getDegreeCourses = (searchVariable, callback) => {
     const users = DegreeCourseModel.find(searchVariable, (error, degree) => {
         if (error) {
@@ -18,7 +9,6 @@ const getDegreeCourses = (searchVariable, callback) => {
         }
     });
 }
-
 
 function findDegreeCourseBy(searchProperty, callback) {
     const query = DegreeCourseModel.findOne({ _id: searchProperty });
@@ -40,9 +30,7 @@ const createDegreeCourse = (course, callback) => {
     if (course.name === '' || course.universityName === '' || course.departmentName === '') {
         return callback('Please fill all required fields!', null);
     }
-    // TODO
     const query = DegreeCourseModel.findOne(course);
-    // params error and result have to be in that order
     query.exec(async (error, result) => {
         if (result) {
             return callback('Degree course already exists!', null);
@@ -57,9 +45,7 @@ const updateDegreeCourse = (update, parameters, callback) => {
     if (update.name === '' || update.universityName === '' || update.departmentName === '') {
         return callback('Please fill all required fields!', null);
     }
-    // TODO
     const query = DegreeCourseModel.findOne({ _id: parameters.degreeCourseID });
-
     query.exec(async (error, result) => {
         if (error) {
             return callback('Could not update degree course', null);
@@ -89,7 +75,6 @@ const deleteDegreeCourse = (parameters, callback) => {
         }
     });
 };
-
 
 module.exports = {
     getDegreeCourses,

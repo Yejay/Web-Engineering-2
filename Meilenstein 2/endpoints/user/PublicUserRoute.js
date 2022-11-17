@@ -3,13 +3,13 @@ const router = express.Router();
 const userService = require('./UserService');
 
 router.get('/', async (req, res) => {
-    const users = await userService.getUsers(req, res);
+    const users = await userService.getUsers(true);
     res.status(200).send(users);
 });
 
 router.get('/:userID', (req, res) => {
     const userId = req.params['userID'];
-    userService.findUserBy(userId, (error, result) => {
+    userService.findUserBy(userId, true, (error, result) => {
         if (result) {
             res.status(200).json(result);
         } else {
@@ -18,10 +18,24 @@ router.get('/:userID', (req, res) => {
     });
 });
 
+router.post('/', (req, res) => {
+    const user = req.body;
+
+    userService.registerUser(user, true, (error, result) => {
+        if (result) {
+            res.status(200).json(result);
+        } else {
+            if (error) {
+                res.status(400).json(error);
+            }
+        }
+    });
+});
+
 router.put('/:userID', async (req, res) => {
     const userId = req.params['userID'];
     const toBeUpdated = req.body;
-    userService.updateFirstAndLastName(toBeUpdated, userId, (result, error) => {
+    userService.updateFirstAndLastName(toBeUpdated, userId, true, (result, error) => {
         if (result) {
             res.status(200).json(result);
         } else {
@@ -32,19 +46,6 @@ router.put('/:userID', async (req, res) => {
     });
 });
 
-router.post('/', (req, res) => {
-    const user = req.body;
-
-    userService.registerUser(user, (error, result) => {
-        if (result) {
-            res.status(200).json(result);
-        } else {
-            if (error) {
-                res.status(400).json(error);
-            }
-        }
-    });
-});
 
 router.delete('/:userID', async (req, res) => {
     const userId = req.params['userID'];

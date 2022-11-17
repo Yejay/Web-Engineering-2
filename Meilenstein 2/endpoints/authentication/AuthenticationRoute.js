@@ -1,20 +1,13 @@
-var express = require("express");
-var router = express.Router();
+const express = require("express");
+const router = express.Router();
 
-var authenticationService = require("./AuthenticationService")
-
-// KOMMT HIER NOCH IRGENDWAS REIN???
+const authenticationService = require("./AuthenticationService")
 
 
 router.get('/', (req, res) => {
-    authenticationService.createSessionToken(req.headers.authorization, (err, token, user) => {
+    authenticationService.createSessionToken(req.headers.authorization, (err, token) => {
         if (token) {
-            res.header("Authorization", "Bearer " + token);
-            if (user) {
-                res.status(200).send(user);
-            } else {
-                res.status(401).json({err: 'Not Authorized'});
-            }
+            res.status(200).header("Authorization", "Bearer " + token).send('Authorization successfull');
         } else {
             res.status(401).json({ err: "Not Authorized" });
         }

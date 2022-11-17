@@ -25,40 +25,28 @@ const createDefaultServerAdmin = async () => {
     });
 }
 
-const getUsers = async () => {
+const getUsers = async (includePassword) => {
     try {
-        const users = await UserModel.find();
-        return users;
+        if (includePassword) {
+            const users = await UserModel.find()
+            return users;
+
+        } else {
+            const users = await UserModel.find().select('-password');
+            return users;
+        }
     } catch (e) {
         return e;
     }
 };
 
-const registerUser = async (user, callback) => {
-    if (!user.userID || !user.firstName || !user.lastName || !user.password) {
-        return callback(null, 'Please insert the required fields!')
+function findUserBy(searchUserID, includePassword, callback) {
+    let query;
+    if (includePassword) {
+        query = UserModel.findOne({ userID: searchUserID })
+    } else {
+        query = UserModel.findOne({ userID: searchUserID }).select('-password');
     }
-    if (user.userID === '' || user.firstName === '' || user.lastName === '' || user.password === '') {
-        return callback(null, 'Please fill all required fields!');
-    }
-    const duplicate = UserModel.findOne({ userID: user.userID });
-    // params error and result have to be in that order
-    duplicate.exec(async (error, result) => {
-        if (error) {
-            return callback('Could not create user!')
-        } else {
-            if (result) {
-                return callback('User already exists!', null);
-            } else {
-                const created = await UserModel.create(user);
-                return callback(null, created);
-            }
-        }
-    });
-};
-
-function findUserBy(searchUserID, callback) {
-    const query = UserModel.findOne({ userID: searchUserID });
     query.exec(function (err, user) {
         if (err) {
             return callback("Did not find user for userID: ");
@@ -70,7 +58,31 @@ function findUserBy(searchUserID, callback) {
     });
 }
 
-const updateFirstAndLastName = async (update, userId, callback) => {
+const registerUser = async (user, includePassword, callback) => {
+    if (!user.userID || !user.firstName || !user.lastName || !user.password) {
+        return callback(null, 'Please insert the required fields!')
+    }
+    const duplicate = UserModel.findOne({ userID: user.userID });
+    // params error and result have to be in that order
+    duplicate.exec(async (error, result) => {
+        if (error) {
+            return callback('Could not create user!')
+        } else {
+            if (result) {
+                return callback('User already exists!', null);
+            } else {
+                const created = await UserModel.create(user);
+                if (includePassword) {
+                    return callback(null, created);
+                } else {
+                    return callback(null, await UserModel.findOne({ userID: created.userID }).select('-password'));
+                }
+            }
+        }
+    });
+};
+
+const updateFirstAndLastName = async (update, userId, includePassword, callback) => {
     if (update.userID === '' || update.firstName === '' || update.lastName === '' || update.password === '') {
         return callback(null, 'Please fill all required fields!');
     }
@@ -82,7 +94,12 @@ const updateFirstAndLastName = async (update, userId, callback) => {
                 update.password = await bcrypt.hash(update.password, 10);
             }
             const updated = await UserModel.findOneAndUpdate({ userID: userId }, update, { new: true });
-            return callback(updated, null);
+            if (includePassword) {
+                return callback(null, updated);
+
+            } else {
+                return callback(null, await UserModel.findOne({ userID: updated.userID }).select('-password'));
+            }
         } else {
             return callback(null, 'User not found!');
         }
