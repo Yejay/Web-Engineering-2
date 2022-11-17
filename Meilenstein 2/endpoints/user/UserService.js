@@ -48,12 +48,12 @@ function findUserBy(searchUserID, includePassword, callback) {
         query = UserModel.findOne({ userID: searchUserID }).select('-password');
     }
     query.exec(function (err, user) {
-        if (err) {
-            return callback("Did not find user for userID: ");
+        if (user) {
+            return callback(null, user);
         }
         else {
-            console.log('Found userID: ' + searchUserID);
-            return callback(null, user);
+            return callback("Did not find user for userID: ");
+            // console.log('Found userID: ' + searchUserID);
         }
     });
 }

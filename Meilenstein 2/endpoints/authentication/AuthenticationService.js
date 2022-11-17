@@ -14,7 +14,6 @@ function createSessionToken(props, callback) {
     const [username, password] = credentials.split(':');
 
     userService.findUserBy(username, true, function (error, user) {
-        console.log('in find user');
         if (user) {
             console.log("Found user, check the password")
             user.comparePassword(password, function (err, isMatch) {
@@ -25,12 +24,11 @@ function createSessionToken(props, callback) {
                 else {
                     if (isMatch) {
                         console.log("Password is correct. Create token.");
-                        // var issuedAt = new Date().getTime();
+                        var issuedAt = new Date().getTime();
                         var expirationTime = config.get("session.timeout");
-                        // * 1000
-                        // var expiresAt = issuedAt + (expirationTime);
+                        var expiresAt = issuedAt + (expirationTime);
                         var privateKey = config.get("session.tokenKey");
-                        var token = jwt.sign({ "user": user.userID, "isAdministrator": user.isAdministrator }, privateKey, { expiresIn: expirationTime * 1000, algorithm: "HS256" });
+                        var token = jwt.sign({ "user": user.userID, "isAdministrator": user.isAdministrator }, privateKey, { expiresIn: expiresAt, algorithm: "HS256" });
                         console.log("Token created: " + token);
                         callback(null, token);
                     }
@@ -40,10 +38,8 @@ function createSessionToken(props, callback) {
                     }
                 }
             })
-        }
-        else if (error) {
-            console.log(error);
-            callback("Did not find user", null);
+        } else {
+            callback(error, null);
         }
     })
 }

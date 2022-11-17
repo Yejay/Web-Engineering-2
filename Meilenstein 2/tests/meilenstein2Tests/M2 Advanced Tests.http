@@ -196,7 +196,7 @@ Content-Type: application/json
 }
 
 ###
-@degreeCourseID = {{createDegreeCourseRequest.response.body.id}}
+@degreeCourseID = {{createDegreeCourseRequest.response.body._id}}
 
 ### Auflisten aller Studiengänge, es sollte jetzt einen geben
 http://localhost/api/degreeCourses
