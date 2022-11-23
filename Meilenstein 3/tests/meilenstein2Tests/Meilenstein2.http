@@ -37,7 +37,7 @@ Authorization: {{adminToken}}
 
 // Ändere beim zweiten User den User-Name. Zur Selektion des Users verwende die userID.
 ###
-PUT http://localhost/api/users/manfreddd
+PUT http://localhost/api/users/manfred
 Content-Type: application/json
 Authorization: {{adminToken}}
 

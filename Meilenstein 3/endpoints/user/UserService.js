@@ -30,7 +30,6 @@ const getUsers = async (includePassword) => {
         if (includePassword) {
             const users = await UserModel.find()
             return users;
-
         } else {
             const users = await UserModel.find().select('-password');
             return users;
@@ -50,7 +49,8 @@ function findUserBy(searchUserID, includePassword, callback) {
     query.exec(function (err, user) {
         if (user) {
             return callback(null, user);
-        } else {
+        }
+        else {
             return callback("Did not find user for userID: ");
             // console.log('Found userID: ' + searchUserID);
         }
@@ -100,9 +100,7 @@ const updateFirstAndLastName = async (update, userId, includePassword, callback)
                 return callback(null, await UserModel.findOne({ userID: updated.userID }).select('-password'));
             }
         } else {
-            return callback('User not found', null);
-            // possible error in Test 26
-            // return callback(null, 'User not found!');
+            return callback('User not found!', null);
         }
     });
 };

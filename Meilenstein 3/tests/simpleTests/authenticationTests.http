@@ -1,0 +1,12 @@
+POST http://localhost:80/authenticate/login
+Content-Type: application/json
+
+{
+    "userID": "tati",
+    "password": "123"
+}
+
+###
+
+POST http://localhost:80/authenticate/loginBasic
+Authorization: Basic dGF0aToxMjM-
