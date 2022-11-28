@@ -59,6 +59,7 @@ function findUserBy(searchUserID, includePassword, callback) {
 
 const registerUser = async (user, includePassword, callback) => {
     if (!user.userID || !user.firstName || !user.lastName || !user.password) {
+        // TODO swap returns
         return callback(null, 'Please insert the required fields!')
     }
     const duplicate = UserModel.findOne({ userID: user.userID });
@@ -83,6 +84,7 @@ const registerUser = async (user, includePassword, callback) => {
 
 const updateFirstAndLastName = async (update, userId, includePassword, callback) => {
     if (update.userID === '' || update.firstName === '' || update.lastName === '' || update.password === '') {
+        // TODO swap returns
         return callback(null, 'Please fill all required fields!');
     }
     const duplicate = UserModel.findOne({ userID: userId });

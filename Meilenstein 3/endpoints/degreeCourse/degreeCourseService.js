@@ -43,12 +43,8 @@ function findDegreeCourseBy(searchProperty, callback) {
 }
 
 const createDegreeCourse = (course, callback) => {
-    console.log(course);
     if (!course.name || !course.universityName || !course.departmentName) {
-        return callback('Please insert the required fields!', null)
-    }
-    if (course.name === '' || course.universityName === '' || course.departmentName === '') {
-        return callback('Please fill all required fields!', null);
+        return callback('Please fill all required fields!', null)
     }
     const query = DegreeCourseModel.findOne(course);
     query.exec(async (error, result) => {

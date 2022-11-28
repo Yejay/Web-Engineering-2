@@ -17,6 +17,7 @@ const userRoutes = require('./endpoints/user/UserRoute');
 const publicUserRoutes = require('./endpoints/user/PublicUserRoute');
 const authenticationRoutes = require('./endpoints/authentication/AuthenticationRoute');
 const degreeCourseRoutes = require('./endpoints/degreeCourse/degreeCourseRoute');
+const degreeCourseApplicationRoutes = require('./endpoints/degreeCourseApplication/degreeCourseApplicationRoute');
 
 const database = require('./database/db');
 const httpPort = process.env.HTTPPORT;
@@ -55,6 +56,7 @@ app.use('/api/users', userRoutes);
 app.use('/api/publicUsers', publicUserRoutes);
 app.use('/api/authenticate', authenticationRoutes);
 app.use('/api/degreeCourses', degreeCourseRoutes);
+app.use('/api/degreeCourseApplications', degreeCourseApplicationRoutes);
 app.use('/', (req, res, next) => { res.send('this is a secure server') });
 // degreeCourse muss hier noch rein
 

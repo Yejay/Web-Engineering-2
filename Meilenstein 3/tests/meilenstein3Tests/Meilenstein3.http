@@ -125,6 +125,46 @@ Content-Type: application/json
     "targetPeriodYear": 2024,
     "targetPeriodShortName": "WiSe"
 }
+
+// Lege dritten User an
+###
+POST https://localhost/api/users
+Authorization: {{adminToken}}
+Content-Type: application/json
+
+{
+    "userID": "susi",
+    "firstName": "Susi",
+    "lastName": "Sunkist",
+    "password": "asdf"
+}
+
+// In diesem Fall legt der Administrator für den User susi eine Bewerbung an
+###
+POST https://localhost/api/degreeCourseApplications
+Authorization: {{adminToken}}
+Content-Type: application/json
+
+{
+    "applicantUserID": "susdfi",
+    "degreeCourseID": "{{degreeCourseID}}",
+    "targetPeriodYear": 2024,
+    "targetPeriodShortName": "WiSe"
+}
+
+// In diesem Fall legt der Administrator für den User manfred erneut die gleiche Bewerbung an, das sollte scheitern
+###
+POST https://localhost/api/degreeCourseApplications
+Authorization: {{adminToken}}
+Content-Type: application/json
+
+{
+    "applicantUserID": "manfred",
+    "degreeCourseID": "{{degreeCourseID}}",
+    "targetPeriodYear": 2024,
+    "targetPeriodShortName": "WiSe"
+}
+
 ###
 @applicationID = {{createApplicationRequest.response.body.id}}
 

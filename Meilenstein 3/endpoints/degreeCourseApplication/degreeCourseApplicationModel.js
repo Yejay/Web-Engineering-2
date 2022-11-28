@@ -3,16 +3,20 @@ const mongoose = require('mongoose');
 const degreeCourseApplicationSchema = new mongoose.Schema(
     {
         applicantUserID: {
-            type: String
+            type: String,
+            required: [true, 'Please add an applicant user ID.']
         },
-        courseDegreeID: {
-            type: String
+        degreeCourseID: {
+            type: String,
+            required: [true, 'Please add a degree course ID.']
         },
         targetPeriodYear: {
-            type: Number
+            type: Number,
+            required: [true, 'Please add a target period year.']
         },
         targetPeriodShortName: {
-            type: String
+            type: String,
+            required: [true, 'Please add a target period short name.']
         }
     },
     {
