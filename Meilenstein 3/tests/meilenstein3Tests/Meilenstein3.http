@@ -146,7 +146,7 @@ Authorization: {{adminToken}}
 Content-Type: application/json
 
 {
-    "applicantUserID": "susdfi",
+    "applicantUserID": "susi",
     "degreeCourseID": "{{degreeCourseID}}",
     "targetPeriodYear": 2024,
     "targetPeriodShortName": "WiSe"

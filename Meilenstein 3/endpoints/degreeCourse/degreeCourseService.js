@@ -24,7 +24,7 @@ const getDegreeCourses = (searchVariable, callback) => {
 function findDegreeCourseBy(searchProperty, callback) {
     const query = DegreeCourseModel.findOne({ _id: searchProperty });
     query.exec(function (error, course) {
-        if (error) {
+        if (!course) {
             return callback("Did not find course", null);
         }
         else {

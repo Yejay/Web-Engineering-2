@@ -57,7 +57,7 @@ app.use('/api/publicUsers', publicUserRoutes);
 app.use('/api/authenticate', authenticationRoutes);
 app.use('/api/degreeCourses', degreeCourseRoutes);
 app.use('/api/degreeCourseApplications', degreeCourseApplicationRoutes);
-app.use('/', (req, res, next) => { res.send('this is a secure server') });
+// app.use('/', (req, res, next) => { res.send('this is a secure server') });
 // degreeCourse muss hier noch rein
 
 // app.use(function (err, res) {

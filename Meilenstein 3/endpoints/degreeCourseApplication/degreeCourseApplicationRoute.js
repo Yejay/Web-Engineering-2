@@ -16,7 +16,7 @@ router.post('/', (req, res) => {
         authenticationService.verifyJWT(req.headers.authorization, (error, result) => {
             if (result) {
                 const application = req.body;
-                const authorizedUserID = result.userID;
+                const authorizedUserID = result;
                 degreeCourseApplicationService.createApplication(application, authorizedUserID, (error, result) => {
                     if (result) {
                         res.status(200).json(result);
@@ -38,7 +38,7 @@ router.get('/myApplications', (req, res) => {
     } else {
         authenticationService.verifyJWT(req.headers.authorization, (error, result) => {
             if (result) {
-                const currentUserID = result.userID;
+                const currentUserID = result.user;
                 degreeCourseApplicationService.getCurrentUsersApplications(currentUserID, (error, result) => {
                     if (result) {
                         res.status(200).json(result);
@@ -77,14 +77,58 @@ router.get('/', (req, res) => {
             }
         });
     }
-
-
 })
 
+
+
 // PUT Updaten einer bereits existierenden Bewerbung
+router.put('/:id', (req, res) => {
+    if (!req.headers.authorization) {
+        res.status(401).json({ error: 'Not authorized, invalid token' })
+    } else {
+        authenticationService.verifyJWT(req.headers.authorization, (error, result) => {
+            if (result) {
+                if (result.isAdministrator) {
+                    const parameters = req.params;
+                    const toBeUpdated = req.body;
+                    degreeCourseApplicationService.updateApplication(toBeUpdated, parameters, (error, result) => {
+                        if (result) {
+                            res.status(200).json(result);
+                        } else {
+                            res.status(404).json({ error: error });
+                        }
+                    });
+                }
+            } else {
+                res.status(401).json({ error: 'Invalid token' });
+            }
+        })
+    }
+});
 
 // DELETE Löschen der Bewerbung
-
+router.delete('/:id', (req, res) => {
+    if (!req.headers.authorization) {
+        res.status(401).json({ error: 'Not authorized, invalid token' })
+    } else {
+        authenticationService.verifyJWT(req.headers.authorization, (error, result) => {
+            if (result) {
+                if (result.isAdministrator) {
+                    const parameters = req.params;
+                    degreeCourseApplicationService.deleteApplication(parameters, (error, result) => {
+                        if (result) {
+                            res.status(204).json(result);
+                        } else {
+                            res.status(404).json({ error: error });
+                        }
+                    });
+                }
+            } else {
+                res.status(401).json({ error: 'Invalid token' });
+            }
+        })
+    }
+});
 
 
 

@@ -2,6 +2,7 @@ const express = require('express');
 const router = express.Router();
 
 const degreeCourseService = require('./degreeCourseService');
+const degreeCourseApplicationService = require('../degreeCourseApplication/degreeCourseApplicationService');
 const authenticationService = require('../authentication/AuthenticationService');
 
 
@@ -10,7 +11,7 @@ router.get('/', (req, res) => {
         if (result) {
             res.status(200).json(result);
         } else {
-            res.status(400).json(error);
+            res.status(400).json({ error: error });
         }
     });
 });
@@ -22,10 +23,19 @@ router.get('/:_id', (req, res) => {
         if (result) {
             res.status(200).json(result);
         } else {
-            res.status(400).json({ error: 'Degree with specified ID not found!' });
+            res.status(400).json({ error: error });
         }
     });
 });
+
+// Nachgelagerte Suche
+router.get('/:degreeCourseID/degreeCourseApplications', (req, res) => {
+    res.redirect('/api/degreeCourseApplications/?degreeCourseID=' + req.params.degreeCourseID);
+})
+
+// router.get('/:degreeCourseID/degreeCourseApplications', (req, res) => {
+//     res.redirect('https://localhost/api/degreeCourseApplications/?degreeCourseID=' + req.params.degreeCourseID);
+// })
 
 
 router.post('/', (req, res) => {
@@ -40,7 +50,7 @@ router.post('/', (req, res) => {
                         if (result) {
                             res.status(200).json(result);
                         } else {
-                            res.status(400).json(error);
+                            res.status(400).json({ error: error });
                         }
                     });
                 }
@@ -65,7 +75,7 @@ router.put('/:degreeCourseID', (req, res) => {
                         if (result) {
                             res.status(200).json(result);
                         } else {
-                            res.status(404).json(error);
+                            res.status(404).json({ error: error });
                         }
                     });
                 }
@@ -89,7 +99,7 @@ router.delete('/:degreeCourseID', (req, res) => {
                         if (result) {
                             res.status(204).json(result);
                         } else {
-                            res.status(404).json(error);
+                            res.status(404).json({ error: error });
                         }
                     });
                 }
