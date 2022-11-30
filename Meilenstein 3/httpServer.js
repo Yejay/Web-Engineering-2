@@ -31,6 +31,7 @@ const httpsPort = process.env.HTTPSPORT;
 
 const sslServer = https.createServer(
     {
+        // __dirname gives absolute path of the directory that contains the currently executing file.
         key: fs.readFileSync(path.join(__dirname, 'certificates', 'key.pem')),
         cert: fs.readFileSync(path.join(__dirname, 'certificates', 'cert.pem')),
     }, app
