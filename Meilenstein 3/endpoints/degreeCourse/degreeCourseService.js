@@ -1,4 +1,4 @@
-const DegreeCourseModel = require('./degreeCourseModel');
+const DegreeCourseModel = require('./DegreeCourseModel');
 
 const getDegreeCourses = (searchVariable, callback) => {
     DegreeCourseModel.find(searchVariable, (error, degree) => {

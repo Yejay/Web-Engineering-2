@@ -3,7 +3,7 @@ const bcrypt = require("bcryptjs");
 
 
 const createDefaultServerAdmin = async () => {
-    var adminUser = new UserModel();
+    const adminUser = new UserModel();
     adminUser.userID = "admin"
     adminUser.firstName = 'Default Administrator Account'
     adminUser.lastName = 'Default Administrator Account'
@@ -16,9 +16,13 @@ const createDefaultServerAdmin = async () => {
             return callback('Could not create admin!');
         } else {
             if (result) {
+                console.log('--------------------------------------------------------------------------');
                 console.log('Admin already exists!');
+                console.log('--------------------------------------------------------------------------');
             } else {
+                console.log('--------------------------------------------------------------------------');
                 console.log("Do not have admin account yet. Create it with default password");
+                console.log('--------------------------------------------------------------------------');
                 await UserModel.create(adminUser);
             }
         }
@@ -34,8 +38,8 @@ const getUsers = async (includePassword) => {
             const users = await UserModel.find().select('-password');
             return users;
         }
-    } catch (e) {
-        return e;
+    } catch (error) {
+        return error;
     }
 };
 
@@ -51,20 +55,17 @@ function findUserBy(searchUserID, includePassword, callback) {
             return callback(null, user);
         }
         else {
-            return callback("Did not find user for userID: ");
-            // console.log('Found userID: ' + searchUserID);
+            return callback("Did not find user for userID: ", null);
         }
     });
 }
 
 const registerUser = async (user, includePassword, callback) => {
     if (!user.userID || !user.firstName || !user.lastName || !user.password) {
-        // TODO swap returns
-        return callback(null, 'Please insert the required fields!')
+        return callback('Please insert the required fields!', null)
     }
-    const duplicate = UserModel.findOne({ userID: user.userID });
-    // params error and result have to be in that order
-    duplicate.exec(async (error, result) => {
+    const query = UserModel.findOne({ userID: user.userID });
+    query.exec(async (error, result) => {
         if (error) {
             return callback('Could not create user!')
         } else {
@@ -82,14 +83,10 @@ const registerUser = async (user, includePassword, callback) => {
     });
 };
 
-const updateFirstAndLastName = async (update, userId, includePassword, callback) => {
-    if (update.userID === '' || update.firstName === '' || update.lastName === '' || update.password === '') {
-        // TODO swap returns
-        return callback(null, 'Please fill all required fields!');
-    }
-    const duplicate = UserModel.findOne({ userID: userId });
+const updateUser = async (update, userId, includePassword, callback) => {
+    const query = UserModel.findOne({ userID: userId });
 
-    duplicate.exec(async (error, result) => {
+    query.exec(async (error, result) => {
         if (result) {
             if (update.password) {
                 update.password = await bcrypt.hash(update.password, 10);
@@ -108,15 +105,14 @@ const updateFirstAndLastName = async (update, userId, includePassword, callback)
 };
 
 const deleteUser = (userId, callback) => {
-    const duplicate = UserModel.findOne({ userID: userId });
-    duplicate.exec(async (error, result) => {
+    const query = UserModel.findOne({ userID: userId });
+    query.exec(async (error, result) => {
         if (result) {
             const deleted = await UserModel.deleteOne({ userID: userId });
             return callback(null, deleted);
         } else {
             return callback('User not found!', null)
         }
-
     });
 };
 
@@ -124,7 +120,7 @@ module.exports = {
     createDefaultServerAdmin,
     getUsers,
     findUserBy,
-    updateFirstAndLastName,
     registerUser,
+    updateUser,
     deleteUser,
 };

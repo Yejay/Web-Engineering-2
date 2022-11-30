@@ -1,10 +1,10 @@
-const DegreeCourseApplicationModel = require('./degreeCourseApplicationModel');
-const DegreeCourseModel = require('../degreeCourse/degreeCourseModel');
+const DegreeCourseApplicationModel = require('./DegreeCourseApplicationModel');
+const DegreeCourseModel = require('../degreeCourse/DegreeCourseModel');
 const UserModel = require('../user/UserModel');
 
 const createApplication = async (application, authorizedUserID, callback) => {
     if (application.applicantUserID == null) {
-        application.applicantUserID = authorizedUserID.user;
+        application.applicantUserID = authorizedUserID;
     }
 
     if (!application.applicantUserID || !application.degreeCourseID || !application.targetPeriodYear || !application.targetPeriodShortName) {
@@ -69,7 +69,7 @@ const getCurrentUsersApplications = (currentUserID, callback) => {
 const getApplicationsByQuery = (query, callback) => {
     DegreeCourseApplicationModel.find(query, (error, result) => {
         if (error) {
-            return callback(error, null);
+            return callback('Application not found!', null);
         } else {
             let mappedResult = result.map(function (result) {
                 return {
@@ -89,13 +89,13 @@ const updateApplication = (update, parameters, callback) => {
     if (update.name === '' || update.universityName === '' || update.departmentName === '') {
         return callback('Please fill all required fields!', null);
     }
-    const query = DegreeCourseApplicationModel.findOne({ _id: parameters.id });
+    const query = DegreeCourseApplicationModel.findOne(parameters);
     query.exec(async (error, result) => {
         if (error) {
             return callback('Could not update degree course', null);
         } else {
             if (result) {
-                const updated = await DegreeCourseApplicationModel.findOneAndUpdate({ _id: parameters.id }, update, { new: true });
+                const updated = await DegreeCourseApplicationModel.findOneAndUpdate(parameters, update, { new: true });
                 let mappedResult = {
                     "id": updated.id,
                     "applicantUserID": updated.applicantUserID,
