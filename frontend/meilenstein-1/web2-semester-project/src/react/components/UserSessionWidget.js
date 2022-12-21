@@ -2,12 +2,9 @@ import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import Button from 'react-bootstrap/Button';
 import Modal from 'react-bootstrap/Modal';
-
+import Form from 'react-bootstrap/Form';
 import * as authenticationActions from '../actions/AuthenticationActions';
 import { bindActionCreators } from 'redux';
-
-import Form from 'react-bootstrap/Form';
-import ButtonGroup from 'react-bootstrap/ButtonGroup';
 
 const mapStateToProps = (state) => {
 	return state;
@@ -64,28 +61,24 @@ class UserSessionWidget extends Component {
 			showDialog = false;
 		}
 
-		const authButton = () => {
-			if (this.props.user) {
-				return (
-					<Button id='LogoutButton' variant='primary' onClick={this.handleLogout}>
-						Logout{' '}
-					</Button>
-				);
-			} else {
-				return (
-					<ButtonGroup>
-						<Button id='OpenLoginDialogButton' variant='primary' onClick={this.handleShow}>
-							Login
-						</Button>
-						{/* <Button id="RegisterDialog" variant="primary">Signup</Button> */}
-					</ButtonGroup>
-				);
-			}
-		};
+		let authButton;
+		if (this.props.user) {
+			authButton = (
+				<Button id='LogoutButton' variant='primary' onClick={this.handleLogout}>
+					Logout{' '}
+				</Button>
+			);
+		} else {
+			authButton = (
+				<Button id='OpenLoginDialogButton' variant='primary' onClick={this.handleShow}>
+					Login
+				</Button>
+			);
+		}
 
 		return (
 			<div>
-				{authButton()}
+				{authButton}
 				<Modal id='LoginDialog' show={showDialog} onHide={this.handleClose}>
 					<Modal.Header closeButton>
 						<Modal.Title> Login Information</Modal.Title>

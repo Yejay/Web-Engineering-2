@@ -5,7 +5,7 @@ const LandingPage = () => {
 	return (
 		<div id='LandingPage' style={styles.container}>
 			<h1 style={styles.heading}>Welcome to my landing page!</h1>
-			<p style={styles.paragraph}>This is a simple landing page built with React.js and styled-components.</p>
+			<p style={styles.paragraph}>This is a simple landing page</p>
 			<ul style={styles.featuresList}>
 				<li style={styles.featureItem}>Feature 1</li>
 				<p style={styles.paragraph}>
