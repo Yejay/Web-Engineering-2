@@ -3,7 +3,7 @@ import LoginButton from './LoginButton';
 
 const LandingPage = () => {
 	return (
-		<div style={styles.container}>
+		<div id='LandingPage' style={styles.container}>
 			<h1 style={styles.heading}>Welcome to my landing page!</h1>
 			<p style={styles.paragraph}>This is a simple landing page built with React.js and styled-components.</p>
 			<ul style={styles.featuresList}>

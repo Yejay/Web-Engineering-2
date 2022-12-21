@@ -2,7 +2,7 @@ import React from 'react';
 
 const PrivatePage = () => {
 	return (
-		<div style={styles.container}>
+		<div id='StartPage' style={styles.container}>
 			<h1 style={styles.heading}>Welcome to my private page!</h1>
 			<p style={styles.paragraph}>This is a simple landing page built with React.js and styled-components.</p>
 		</div>

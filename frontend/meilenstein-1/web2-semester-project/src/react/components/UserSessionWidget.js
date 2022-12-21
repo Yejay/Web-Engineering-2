@@ -74,7 +74,7 @@ class UserSessionWidget extends Component {
 			} else {
 				return (
 					<ButtonGroup>
-						<Button id='LoginOpenDialogButton' variant='primary' onClick={this.handleShow}>
+						<Button id='OpenLoginDialogButton' variant='primary' onClick={this.handleShow}>
 							Login
 						</Button>
 						{/* <Button id="RegisterDialog" variant="primary">Signup</Button> */}
@@ -94,13 +94,13 @@ class UserSessionWidget extends Component {
 						<Form>
 							<Form.Group className='Form'>
 								<Form.Label>Username</Form.Label>
-								<Form.Control type='text' placeholder='Enter username' name='userID' onChange={this.handleChange} />
+								<Form.Control id='LoginDialogUserIDText' type='text' placeholder='Enter username' name='userID' onChange={this.handleChange} />
 							</Form.Group>
 							<Form.Group className='mb-3'>
 								<Form.Label>Password</Form.Label>
-								<Form.Control type='password' placeholder='Enter Password' name='password' onChange={this.handleChange} />
+								<Form.Control id='LoginDialogPasswordText' type='password' placeholder='Enter Password' name='password' onChange={this.handleChange} />
 							</Form.Group>
-							<Button variant='primary' type='submit' onClick={this.handleSubmit}>
+							<Button id='PerformLoginButton' variant='primary' type='submit' onClick={this.handleSubmit}>
 								Login
 							</Button>
 						</Form>{' '}
